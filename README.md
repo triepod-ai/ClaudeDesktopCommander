@@ -2,7 +2,15 @@
 
 [![npm downloads](https://img.shields.io/npm/dw/@triepod-ai/desktop-commander)](https://www.npmjs.com/package/@triepod-ai/desktop-commander)
 
-Short version. Three key things. Terminal commands, diff based file editing, and comprehensive logging.
+Terminal commands, diff-based file editing, and comprehensive logging for Claude AI assistants. Integrates with both Claude Desktop and Windsurf IDE extension.
+
+## Documentation
+
+- [MCP Integration Guide](./MCP_INTEGRATION_README.md) - How to integrate MCP servers with Claude Desktop and Windsurf
+- [MCP Tools Inventory](./MCP_TOOLS_INVENTORY.md) - Complete inventory of all available MCP tools
+- [MCP Setup Guide](./MCP_SETUP_GUIDE.md) - Step-by-step instructions for setting up MCP servers
+- [Dependency Management](./DEPENDENCY_MANAGEMENT.md) - How dependencies are managed
+- [Testing Guide](./TESTING_GUIDE.md) - How to test MCP server integration
 
 <p align="center">
   <a href="https://github.com/triepod-ai/ClaudeComputerCommander">
@@ -190,11 +198,19 @@ For commands that may take a while:
 
 ## Model Context Protocol Integration
 
+We've successfully integrated 16 MCP servers with Claude clients:
+
+1. **Desktop Commander**: File operations, command execution, and process management
+2. **LLM API Servers**: claude, openai, grok, groq, mistral, perplexity, togetherai, huggingface
+3. **Data Storage Servers**: pinecone, supabase, redis
+4. **External API Servers**: github, google-maps, braveapi
+5. **Filesystem Server**: filesystem
+
 This project extends the MCP Filesystem Server to enable:
-- Local server support in Claude Desktop
-- Full system command execution
-- Process management
-- File operations
+- Local server support in Claude Desktop and Windsurf
+- Full system command execution with background processing
+- Process management and tracking
+- Advanced file operations
 - Code editing with search/replace blocks
 
 ## Configuration

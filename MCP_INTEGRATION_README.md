@@ -1,10 +1,89 @@
-# Claude Desktop MCP Server Integration Guide
+# MCP Server Integration Guide
 
-This document explains how to properly configure and integrate MCP servers with Claude Desktop.
+This document explains how to properly configure and integrate MCP (Model Context Protocol) servers with both Claude Desktop and Windsurf.
 
-## MCP Server Configuration Format
+## Overview
 
-The Claude Desktop app uses a specific format in its configuration file to specify MCP servers:
+MCP allows Claude to access additional tools and capabilities through external servers. The Claude Desktop Commander project provides powerful tools for terminal command execution, file operations, and process management.
+
+Currently, we have successfully integrated with:
+- Claude Desktop app
+- Windsurf IDE extension
+
+## Windsurf Integration
+
+### Windsurf MCP Configuration Format
+
+Windsurf uses a dedicated MCP configuration file located at:
+```
+c:/Users/bthom/.codeium/windsurf/mcp_config.json
+```
+
+This configuration follows this format:
+
+```json
+{
+  "env": {
+    "VARIABLE_NAME": "${VARIABLE_NAME}",
+    "API_KEY_NAME": "${API_KEY_NAME}"
+  },
+  "mcpServers": {
+    "serverName": {
+      "command": "executable",
+      "args": [
+        "ARG1",
+        "ARG2"
+      ],
+      "env": {
+        "SERVER_SPECIFIC_ENV": "${ENV_VARIABLE}"
+      }
+    }
+  }
+}
+```
+
+### Available MCP Servers for Windsurf
+
+We have successfully integrated 16 MCP servers with Windsurf:
+
+1. **desktop-commander**: File operations and command execution
+   ```json
+   "desktop-commander": {
+     "command": "node",
+     "args": ["l:\\ClaudeDesktopCommander\\dist\\index.js"]
+   }
+   ```
+
+2. **LLM API Servers**:
+   - claude
+   - openai
+   - grok
+   - groq
+   - mistral
+   - perplexity
+   - togetherai
+   - huggingface
+
+3. **Data Storage Servers**:
+   - pinecone
+   - supabase
+   - redis
+
+4. **External API Servers**:
+   - github
+   - google-maps
+   - braveapi
+
+5. **Filesystem Server**:
+   - filesystem
+
+## Claude Desktop Integration
+
+### Claude Desktop Configuration Format
+
+The Claude Desktop app uses a specific format in its configuration file to specify MCP servers, typically located at:
+- Windows: `%APPDATA%\Claude\claude_desktop_config.json`
+- macOS: `~/Library/Application Support/Claude/claude_desktop_config.json`
 
 ```json
 {
@@ -37,7 +116,7 @@ The Claude Desktop app uses a specific format in its configuration file to speci
    - A `command` field with the full path to the executable
    - An `args` array with command-line arguments
 
-## Claude Desktop Commander MCP Server
+### Claude Desktop Commander MCP Server
 
 We've configured our Desktop Commander MCP server using a batch script approach:
 
@@ -53,9 +132,9 @@ The batch script (`run-desktop-commander.bat`) ensures:
 2. Absolute paths are used for all components
 3. The Node.js executable is properly referenced
 
-## Alternative Configuration Methods
+### Alternative Configuration Methods
 
-### Direct Node.js Execution
+#### Direct Node.js Execution
 
 ```json
 "desktopCommander": {
@@ -66,9 +145,9 @@ The batch script (`run-desktop-commander.bat`) ensures:
 }
 ```
 
-### Python-based MCP Servers Example
+#### Python-based MCP Servers Example
 
-For Python-based MCP servers using `uv` (as shown in your example):
+For Python-based MCP servers using `uv`:
 
 ```json
 "weather": {
@@ -82,6 +161,41 @@ For Python-based MCP servers using `uv` (as shown in your example):
 }
 ```
 
+## Key Differences Between Windsurf and Claude Desktop Configuration
+
+| Feature | Windsurf | Claude Desktop |
+|---------|----------|---------------|
+| Configuration Location | `c:/Users/bthom/.codeium/windsurf/mcp_config.json` | `%APPDATA%\Claude\claude_desktop_config.json` |
+| Environment Variables | Supports global and per-server env variables | Limited env variable support |
+| Paths | Relative paths may work | Must use absolute paths |
+| Server Naming | More standardized naming conventions | Flexible naming |
+
+## MCP Tools Inventory
+
+The following tools are available through our configured MCP servers:
+
+### Desktop Commander Tools
+- Command execution with timeout and background support
+- Process management (list/kill)
+- File operations (read/write/search)
+- File editing with search/replace blocks
+
+### LLM API Tools
+- Text generation
+- Embeddings
+- Chat completions
+- Function calling
+
+### Data Storage Tools
+- Vector database operations (Pinecone)
+- SQL queries (Supabase)
+- Key-value operations (Redis)
+
+### External API Tools
+- GitHub repository management
+- Google Maps location services
+- Brave Search web queries
+
 ## Testing MCP Integration
 
 Use the provided test scripts to verify integration:
@@ -92,17 +206,33 @@ Use the provided test scripts to verify integration:
 
 ## Troubleshooting
 
-If Claude Desktop fails to connect to your MCP server:
+If your Claude client fails to connect to your MCP server:
 
-1. Check that Claude Desktop has been restarted after configuration changes
-2. Verify that all paths in the configuration are absolute paths
+1. Check that the client has been restarted after configuration changes
+2. Verify that all paths in the configuration are correct (absolute paths for Claude Desktop)
 3. Confirm the executable specified in `command` exists and is accessible
-4. Check logs in the Claude Desktop app for error messages
+4. Check logs in the client app for error messages
 5. Try running the MCP server directly from the command line to verify it works
+
+### Common Issues with Windsurf Integration
+
+- Environment variables not properly set
+- Relative paths causing issues
+- Missing API keys
+- Incompatible server versions
+
+### Common Issues with Claude Desktop Integration
+
+- Absolute paths not used
+- Incorrect Node.js path
+- Missing batch script
+- Server not executable
+- Restart needed after configuration changes
 
 ## Important Notes
 
-- Always use absolute paths in the configuration
-- Make sure the executable has appropriate permissions
-- Restart Claude Desktop after making changes to the configuration
+- For Claude Desktop, always use absolute paths in the configuration
+- For Windsurf, use consistent environment variable patterns
+- Make sure executables have appropriate permissions
+- Restart clients after making changes to configurations
 - Batch scripts can help manage complex startup requirements
