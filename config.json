@@ -13,5 +13,33 @@
     "useradd",
     "usermod",
     "groupadd"
-  ]
+  ],
+  "logging": {
+    "level": "info",
+    "format": "simple",
+    "file": {
+      "enabled": true,
+      "defaultPath": "./logs",
+      "clientPath": "./logs/client",
+      "maxSize": 5242880,
+      "maxFiles": 5
+    },
+    "database": {
+      "enabled": false,
+      "sqlite": {
+        "path": "./logs/logs.db",
+        "batchSize": 100,
+        "flushInterval": 5000
+      }
+    },
+    "buffer": {
+      "enabled": true,
+      "maxSize": 1000,
+      "maxAge": 10000
+    },
+    "fallback": {
+      "maxRetries": 5,
+      "retryInterval": 10000
+    }
+  }
 }

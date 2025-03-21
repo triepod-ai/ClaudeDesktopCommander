@@ -1,15 +1,18 @@
 # Claude Desktop Commander MCP
 
-[![npm downloads](https://img.shields.io/npm/dw/@wonderwhy-er/desktop-commander)](https://www.npmjs.com/package/@wonderwhy-er/desktop-commander)
-[![smithery badge](https://smithery.ai/badge/@wonderwhy-er/desktop-commander)](https://smithery.ai/server/@wonderwhy-er/desktop-commander)
+[![npm downloads](https://img.shields.io/npm/dw/@triepod-ai/desktop-commander)](https://www.npmjs.com/package/@triepod-ai/desktop-commander)
 
-Short version. Two key things. Terminal commands and diff based file editing.
+Short version. Three key things. Terminal commands, diff based file editing, and comprehensive logging.
 
-<a href="https://glama.ai/mcp/servers/zempur9oh4">
-  <img width="380" height="200" src="https://glama.ai/mcp/servers/zempur9oh4/badge" alt="Claude Desktop Commander MCP server" />
-</a>
+<p align="center">
+  <a href="https://github.com/triepod-ai/ClaudeComputerCommander">
+    <img width="380" src="https://raw.githubusercontent.com/triepod-ai/ClaudeComputerCommander/main/assets/triepod-logo.png" alt="Triepod AI" />
+  </a>
+</p>
 
-This is server that allows Claude desktop app to execute long-running terminal commands on your computer and manage processes through Model Context Protocol (MCP) + Built on top of [MCP Filesystem Server](https://github.com/modelcontextprotocol/servers/tree/main/src/filesystem) to provide additional search and replace file editing capabilities .
+This is a server that allows Claude desktop app to execute long-running terminal commands on your computer and manage processes through Model Context Protocol (MCP). Built on top of [MCP Filesystem Server](https://github.com/modelcontextprotocol/servers/tree/main/src/filesystem) to provide additional search and replace file editing capabilities, with enhanced logging and error handling.
+
+> **Note:** This project is a fork of [wonderwhy-er/ClaudeComputerCommander](https://github.com/wonderwhy-er/ClaudeComputerCommander) with additional features and improvements.
 
 ## Features
 
@@ -23,31 +26,32 @@ This is server that allows Claude desktop app to execute long-running terminal c
   - Move files/directories
   - Search files
   - Get file metadata
-  - Code editing capabilities:
+- Code editing capabilities:
   - Surgical text replacements for small changes
   - Full file rewrites for major changes
   - Multiple file support
   - Pattern-based replacements
+- Comprehensive logging system:
+  - File-based logging with rotation
+  - **Advanced SQLite database logging**
+  - Configurable log levels and formats
+  - Detailed error tracking and diagnostics
+- **Dependency Management System**:
+  - Automated risk-based dependency updates
+  - Package health monitoring
+  - Incremental update strategy for critical dependencies
 
 ## Installation
 First, ensure you've downloaded and installed the [Claude Desktop app](https://claude.ai/download) and you have [npm installed](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm).
 
-### Option 1: Installing via Smithery
-
-To install Desktop Commander for Claude Desktop automatically via [Smithery](https://smithery.ai/server/@wonderwhy-er/desktop-commander):
-
-```bash
-npx -y @smithery/cli install @wonderwhy-er/desktop-commander --client claude
-```
-
-### Option 2: Install trough npx
+### Option 1: Install through npx
 Just run this in terminal
 ```
-npx @wonderwhy-er/desktop-commander setup
+npx @triepod-ai/desktop-commander setup
 ```
 Restart Claude if running
 
-### Option 3: Add to claude_desktop_config by hand
+### Option 2: Add to claude_desktop_config by hand
 Add this entry to your claude_desktop_config.json (on Mac, found at ~/Library/Application\ Support/Claude/claude_desktop_config.json):
 ```json
 {
@@ -56,7 +60,7 @@ Add this entry to your claude_desktop_config.json (on Mac, found at ~/Library/Ap
       "command": "npx",
       "args": [
         "-y",
-        "@wonderwhy-er/desktop-commander"
+        "@triepod-ai/desktop-commander"
       ]
     }
   }
@@ -64,10 +68,10 @@ Add this entry to your claude_desktop_config.json (on Mac, found at ~/Library/Ap
 ```
 Restart Claude if running
 
-### Option 4: Checkout locally
+### Option 3: Checkout locally
 1. Clone and build:
 ```bash
-git clone https://github.com/wonderwhy-er/ClaudeComputerCommander.git
+git clone https://github.com/triepod-ai/ClaudeComputerCommander.git
 cd ClaudeComputerCommander
 npm run setup
 ```
@@ -123,6 +127,58 @@ console.log("new message");
 >>>>>>> REPLACE
 ```
 
+## SQLite Logging System
+
+The enhanced SQLite logging system provides robust database logging capabilities:
+
+- **Structured Logging**: Store logs in a structured format for advanced querying
+- **Efficient Storage**: Optimized schema for better performance and reduced storage needs
+- **Query Capabilities**: Filter, search, and analyze logs using SQL
+- **Batch Processing**: Configurable batching for improved performance
+- **Automatic Rotation**: Log rotation and management to prevent database bloat
+
+Configure SQLite logging in your `config.json`:
+
+```json
+{
+  "logging": {
+    "database": {
+      "enabled": true,
+      "sqlite": {
+        "path": "./logs/logs.db",
+        "batchSize": 100,
+        "flushInterval": 5000
+      }
+    }
+  }
+}
+```
+
+## Dependency Management
+
+The dependency management system helps keep your dependencies secure and up-to-date:
+
+- **Risk-Based Updates**: Dependencies are categorized by update risk (low, medium, high)
+- **Staged Updates**: Updates are applied in batches with testing between each stage
+- **Incremental Approach**: Critical dependencies use a stepped update approach for safety
+- **Rollback Support**: Automatic backups and rollback capability if updates fail
+- **Comprehensive Reporting**: Detailed reports of all update operations
+
+Use the dependency update script:
+
+```bash
+# Show what would be updated without making changes
+node scripts/update-dependencies.js --dry-run
+
+# Only update patch versions (safer)
+node scripts/update-dependencies.js --patch-only
+
+# Run full update
+node scripts/update-dependencies.js
+```
+
+For detailed documentation on dependency management, see [DEPENDENCY_MANAGEMENT.md](./DEPENDENCY_MANAGEMENT.md).
+
 ## Handling Long-Running Commands
 
 For commands that may take a while:
@@ -141,7 +197,36 @@ This project extends the MCP Filesystem Server to enable:
 - File operations
 - Code editing with search/replace blocks
 
-Created as part of exploring Claude MCPs: https://youtube.com/live/TlbjFDbl5Us
+## Configuration
+
+The server can be configured using the `config.json` file:
+
+```json
+{
+  "blockedCommands": ["sudo", "rm", "format", ...],
+  "logging": {
+    "level": "info",
+    "format": "simple",
+    "file": {
+      "enabled": true,
+      "defaultPath": "./logs",
+      "clientPath": "./logs/client",
+      "maxSize": 5242880,
+      "maxFiles": 5
+    },
+    "database": {
+      "enabled": true,
+      "sqlite": {
+        "path": "./logs/logs.db",
+        "batchSize": 100,
+        "flushInterval": 5000
+      }
+    }
+  }
+}
+```
+
+For detailed documentation on all features and configuration options, see [DOCUMENTATION.md](./DOCUMENTATION.md).
 
 ## Contributing
 
@@ -149,12 +234,22 @@ If you find this project useful, please consider giving it a ⭐ star on GitHub!
 
 We welcome contributions from the community! Whether you've found a bug, have a feature request, or want to contribute code, here's how you can help:
 
-- **Found a bug?** Open an issue at [github.com/wonderwhy-er/ClaudeComputerCommander/issues](https://github.com/wonderwhy-er/ClaudeComputerCommander/issues)
+- **Found a bug?** Open an issue at [github.com/triepod-ai/ClaudeComputerCommander/issues](https://github.com/triepod-ai/ClaudeComputerCommander/issues)
 - **Have a feature idea?** Submit a feature request in the issues section
 - **Want to contribute code?** Fork the repository, create a branch, and submit a pull request
 - **Questions or discussions?** Start a discussion in the GitHub Discussions tab
 
 All contributions, big or small, are greatly appreciated!
+
+## Recent Enhancements
+
+- **Robust Dependency Management**: New script for safe, categorized updates with detailed reporting and documentation
+- **Advanced SQLite Logging**: Improved database schema, query optimization, and expanded logging capabilities
+- **Package Updates**: All dependencies updated to latest stable versions
+- **Improved Setup Script**: Better directory creation logic and error handling
+- **Better Error Handling**: Structured error tracking and recovery
+- **Command Execution Improvements**: More detailed tracking and logging of command execution
+- **Updated Documentation**: Comprehensive documentation of all features and capabilities
 
 ## License
 

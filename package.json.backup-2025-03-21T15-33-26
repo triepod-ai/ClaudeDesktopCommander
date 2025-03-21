@@ -1,11 +1,11 @@
 {
-  "name": "@triepod-ai/desktop-commander",
-  "version": "0.2.0",
-  "description": "MCP server for terminal operations, file editing, and dependency management",
+  "name": "@wonderwhy-er/desktop-commander",
+  "version": "0.1.19",
+  "description": "MCP server for terminal operations and file editing",
   "license": "MIT",
-  "author": "Triepod AI (forked from Eduards Ruzga)",
-  "homepage": "https://github.com/triepod-ai/ClaudeComputerCommander",
-  "bugs": "https://github.com/triepod-ai/ClaudeComputerCommander/issues",
+  "author": "Eduards Ruzga",
+  "homepage": "https://github.com/wonderwhy-er/ClaudeComputerCommander",
+  "bugs": "https://github.com/wonderwhy-er/ClaudeComputerCommander/issues",
   "type": "module",
   "bin": {
     "desktop-commander": "dist/index.js",
@@ -28,10 +28,7 @@
     "test:watch": "nodemon test/test.js",
     "link:local": "npm run build && npm link",
     "unlink:local": "npm unlink",
-    "inspector": "npx @modelcontextprotocol/inspector dist/index.js",
-    "update-deps": "node scripts/update-dependencies.js",
-    "update-deps:dry": "node scripts/update-dependencies.js --dry-run",
-    "update-deps:safe": "node scripts/update-dependencies.js --patch-only"
+    "inspector": "npx @modelcontextprotocol/inspector dist/index.js"
   },
   "publishConfig": {
     "access": "public"
@@ -53,10 +50,7 @@
     "text-manipulation",
     "code-modification",
     "surgical-edits",
-    "file-operations",
-    "sqlite-logging",
-    "dependency-management",
-    "triepod-ai"
+    "file-operations"
   ],
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.7.0",

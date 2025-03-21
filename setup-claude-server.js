@@ -46,7 +46,9 @@ if (!existsSync(claudeConfigPath)) {
     // Create the directory if it doesn't exist
     const configDir = dirname(claudeConfigPath);
     if (!existsSync(configDir)) {
-        import('fs').then(fs => fs.mkdirSync(configDir, { recursive: true }));
+        // Use synchronous mkdir since we're already using sync file operations
+        const { mkdirSync } = require('fs');
+        mkdirSync(configDir, { recursive: true });
     }
     
     // Create default config
@@ -110,6 +112,21 @@ try {
     logToFile('\nTo use the servers:\n1. Restart Claude if it\'s currently running\n2. The servers will be available in Claude\'s MCP server list');
     
 } catch (error) {
-    logToFile(`Error updating Claude configuration: ${error}`, true);
+    // Enhanced error logging with more details
+    logToFile(`Error updating Claude configuration: ${error.message}`, true);
+    
+    if (error.stack) {
+        logToFile(`Error stack trace: ${error.stack}`, true);
+    }
+    
+    // Additional context about what was being attempted
+    logToFile(`This error occurred while trying to update the config file at: ${claudeConfigPath}`, true);
+    
+    // Guidance for troubleshooting
+    logToFile('Possible solutions:', true);
+    logToFile('1. Check if you have write permissions to the Claude config directory', true);
+    logToFile('2. Make sure the Claude desktop app is not running while this script is executing', true);
+    logToFile('3. Try running this script with administrator/elevated privileges', true);
+    
     process.exit(1);
 }

@@ -6,6 +6,7 @@ import {
 } from "@modelcontextprotocol/sdk/types.js";
 import { zodToJsonSchema } from "zod-to-json-schema";
 import { commandManager } from './command-manager.js';
+import { logToolRequest, logToolResponse, logError, logInfo } from './logger.js';
 import {
   ExecuteCommandArgsSchema,
   ReadOutputArgsSchema,
@@ -54,6 +55,7 @@ export const server = new Server(
 );
 
 server.setRequestHandler(ListToolsRequestSchema, async () => {
+  logInfo('Tool list requested');
   return {
     tools: [
       // Terminal tools
@@ -210,6 +212,9 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
 server.setRequestHandler(CallToolRequestSchema, async (request: CallToolRequest) => {
   try {
     const { name, arguments: args } = request.params;
+    
+    // Log the tool request
+    logToolRequest(name, args);
 
     switch (name) {
       // Terminal tools
@@ -338,9 +343,25 @@ server.setRequestHandler(CallToolRequestSchema, async (request: CallToolRequest)
     }
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : String(error);
-    return {
+    
+    // Log the error
+    logError(`Error executing tool ${request.params.name}`, 
+             error instanceof Error ? error : new Error(errorMessage),
+             { toolName: request.params.name });
+    
+    const response = {
       content: [{ type: "text", text: `Error: ${errorMessage}` }],
       isError: true,
     };
+    
+    // Log tool response (error)
+    logToolResponse(request.params.name, true, errorMessage);
+    
+    return response;
   }
 });
+
+// Set up error handler for the server
+server.onerror = (error) => {
+  logError('MCP server error', error instanceof Error ? error : new Error(String(error)));
+};
