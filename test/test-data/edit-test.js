@@ -1,6 +1,6 @@
 // Sample JavaScript file for edit testing 
 function testFunction() { 
-  console.log("Updated message"); 
+  console.log("Original message"); 
   return true; 
 } 
  

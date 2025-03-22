@@ -7,6 +7,13 @@ import {
 import { zodToJsonSchema } from "zod-to-json-schema";
 import { commandManager } from './command-manager.js';
 import { logToolRequest, logToolResponse, logError, logInfo } from './logger.js';
+import { GetCurrentTimeSchema, ConvertTimeSchema } from './tools/time-schemas.js';
+import { 
+  SearchRepositoriesSchema,
+  GetFileContentsSchema,
+  CreateIssueSchema,
+  GetIssueSchema
+} from './tools/github-schemas.js';
 import {
   ExecuteCommandArgsSchema,
   ReadOutputArgsSchema,
@@ -39,6 +46,8 @@ import {
   listAllowedDirectories,
 } from './tools/filesystem.js';
 import { parseEditBlock, performSearchReplace } from './tools/edit.js';
+import { getCurrentTime, convertTime } from './tools/time.js';
+import { searchRepositories, getFileContents, createIssue, getIssue } from './tools/github.js';
 
 import { VERSION } from './version.js';
 
@@ -205,6 +214,38 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
             "Format: filepath, then <<<<<<< SEARCH, content to find, =======, new content, >>>>>>> REPLACE.",
         inputSchema: zodToJsonSchema(EditBlockArgsSchema),
       },
+      // Time tools
+      {
+        name: "get_current_time",
+        description: "Get current time in a specific timezone",
+        inputSchema: zodToJsonSchema(GetCurrentTimeSchema),
+      },
+      {
+        name: "convert_time",
+        description: "Convert time between timezones",
+        inputSchema: zodToJsonSchema(ConvertTimeSchema),
+      },
+      // GitHub tools
+      {
+        name: "search_repositories",
+        description: "Search for GitHub repositories",
+        inputSchema: zodToJsonSchema(SearchRepositoriesSchema),
+      },
+      {
+        name: "get_file_contents",
+        description: "Get the contents of a file or directory from a GitHub repository",
+        inputSchema: zodToJsonSchema(GetFileContentsSchema),
+      },
+      {
+        name: "create_issue",
+        description: "Create a new issue in a GitHub repository",
+        inputSchema: zodToJsonSchema(CreateIssueSchema),
+      },
+      {
+        name: "get_issue",
+        description: "Get details of a specific issue in a GitHub repository",
+        inputSchema: zodToJsonSchema(GetIssueSchema),
+      },
     ],
   };
 });
@@ -338,6 +379,29 @@ server.setRequestHandler(CallToolRequestSchema, async (request: CallToolRequest)
           }],
         };
       }
+      
+      // Time tools
+      case "get_current_time": {
+        return getCurrentTime(args);
+      }
+      case "convert_time": {
+        return convertTime(args);
+      }
+      
+      // GitHub tools
+      case "search_repositories": {
+        return searchRepositories(args);
+      }
+      case "get_file_contents": {
+        return getFileContents(args);
+      }
+      case "create_issue": {
+        return createIssue(args);
+      }
+      case "get_issue": {
+        return getIssue(args);
+      }
+      
       default:
         throw new Error(`Unknown tool: ${name}`);
     }
