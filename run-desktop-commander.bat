@@ -1,4 +1,6 @@
 @echo off
-REM Run the Claude Desktop Commander MCP server with absolute paths
-cd /d "L:\ClaudeDesktopCommander"
-"C:\Program Files\nodejs\node.exe" "L:\ClaudeDesktopCommander\dist\index.js"
+REM This is a launcher for the Claude Desktop MCP Server
+REM Points to the reorganized component structure
+
+cd /d "L:\ClaudeDesktopCommander\mcp-core"
+"C:\Program Files\nodejs\node.exe" --no-warnings dist/index.js

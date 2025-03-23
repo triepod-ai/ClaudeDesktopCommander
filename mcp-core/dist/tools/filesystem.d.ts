@@ -1,0 +1,10 @@
+export declare function validatePath(requestedPath: string): Promise<string>;
+export declare function readFile(filePath: string): Promise<string>;
+export declare function writeFile(filePath: string, content: string): Promise<void>;
+export declare function readMultipleFiles(paths: string[]): Promise<string[]>;
+export declare function createDirectory(dirPath: string): Promise<void>;
+export declare function listDirectory(dirPath: string): Promise<string[]>;
+export declare function moveFile(sourcePath: string, destinationPath: string): Promise<void>;
+export declare function searchFiles(rootPath: string, pattern: string): Promise<string[]>;
+export declare function getFileInfo(filePath: string): Promise<Record<string, any>>;
+export declare function listAllowedDirectories(): string[];

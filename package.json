@@ -1,76 +1,29 @@
 {
-  "name": "@triepod-ai/desktop-commander",
-  "version": "0.2.0",
-  "description": "MCP server for terminal operations, file editing, and dependency management",
-  "license": "MIT",
-  "author": "Triepod AI (forked from Eduards Ruzga)",
-  "homepage": "https://github.com/triepod-ai/ClaudeComputerCommander",
-  "bugs": "https://github.com/triepod-ai/ClaudeComputerCommander/issues",
-  "type": "module",
-  "bin": {
-    "desktop-commander": "dist/index.js",
-    "setup": "dist/setup-claude-server.js"
-  },
-  "files": [
-    "dist"
+  "name": "claude-desktop-commander-monorepo",
+  "version": "0.1.19",
+  "description": "Claude Desktop Commander Monorepo",
+  "private": true,
+  "workspaces": [
+    "mcp-core",
+    "code-analyzer",
+    "ollama-wrapper"
   ],
   "scripts": {
-    "sync-version": "node scripts/sync-version.js",
-    "bump": "node scripts/sync-version.js --bump",
-    "bump:minor": "node scripts/sync-version.js --bump --minor",
-    "bump:major": "node scripts/sync-version.js --bump --major",
-    "build": "tsc && shx cp setup-claude-server.js dist/ && shx chmod +x dist/*.js",
-    "watch": "tsc --watch",
-    "start": "node dist/index.js",
-    "setup": "npm install && npm run build && node setup-claude-server.js",
-    "prepare": "npm run build",
-    "test": "node test/test.js",
-    "test:watch": "nodemon test/test.js",
-    "link:local": "npm run build && npm link",
-    "unlink:local": "npm unlink",
-    "inspector": "npx @modelcontextprotocol/inspector dist/index.js",
-    "update-deps": "node scripts/update-dependencies.js",
-    "update-deps:dry": "node scripts/update-dependencies.js --dry-run",
-    "update-deps:safe": "node scripts/update-dependencies.js --patch-only"
+    "build:mcp": "cd mcp-core && npm run build",
+    "build:analyzer": "cd code-analyzer && npm run build",
+    "start:mcp": "cd mcp-core && npm start",
+    "start:analyzer": "cd code-analyzer && npm start",
+    "start:ollama": "cd ollama-wrapper && npm start",
+    "test:mcp": "cd mcp-core && npm test",
+    "test:analyzer": "cd code-analyzer && npm test",
+    "install:all": "npm install && npm run install:workspaces",
+    "install:workspaces": "npm run install:mcp && npm run install:analyzer && npm run install:ollama",
+    "install:mcp": "cd mcp-core && npm install",
+    "install:analyzer": "cd code-analyzer && npm install",
+    "install:ollama": "cd ollama-wrapper && npm install"
   },
-  "publishConfig": {
-    "access": "public"
-  },
-  "keywords": [
-    "mcp",
-    "model-context-protocol",
-    "terminal",
-    "claude",
-    "ai",
-    "command-line",
-    "process-management",
-    "file-editing",
-    "code-editing",
-    "diff",
-    "patch",
-    "block-editing",
-    "file-system",
-    "text-manipulation",
-    "code-modification",
-    "surgical-edits",
-    "file-operations",
-    "sqlite-logging",
-    "dependency-management",
-    "triepod-ai"
-  ],
-  "dependencies": {
-    "@modelcontextprotocol/sdk": "^1.7.0",
-    "glob": "^11.0.1",
-    "lru-cache": "^11.0.2",
-    "sqlite": "^5.1.1",
-    "sqlite3": "^5.1.7",
-    "zod": "^3.24.1",
-    "zod-to-json-schema": "^3.23.5"
-  },
-  "devDependencies": {
-    "@types/node": "^20.11.0",
-    "nodemon": "^3.0.2",
-    "shx": "^0.4.0",
-    "typescript": "^5.3.3"
-  }
+  "author": "Eduards Ruzga",
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {}
 }

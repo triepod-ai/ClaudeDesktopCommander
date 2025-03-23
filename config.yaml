@@ -1,0 +1,22 @@
+# Configuration for Ollama API wrapper
+
+# Server settings
+server:
+  host: "0.0.0.0"
+  port: 8020
+  workers: 1
+
+# Ollama settings
+ollama:
+  api_url: "http://custom-ollama:11434"
+  models:
+    default: "llama2"
+    embeddings: "nomic-embed-text"
+    reasoning: "llama2"
+  
+# API settings
+api:
+  openai_compatibility: true
+  enable_chat_completions: true
+  enable_completions: true
+  enable_embeddings: true

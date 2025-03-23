@@ -8,14 +8,17 @@ This documentation provides detailed information about the Claude Desktop Comman
 3. [Logging System](#logging-system)
 4. [Command Execution](#command-execution)
 5. [File Operations](#file-operations)
-6. [Configuration](#configuration)
-7. [Forking and Contributing](#forking-and-contributing)
+6. [Enhanced Code Analyzer](#enhanced-code-analyzer)
+7. [Configuration](#configuration)
+8. [Forking and Contributing](#forking-and-contributing)
+9. [Troubleshooting](#troubleshooting)
 
 ## Overview
 
-Claude Desktop Commander is an MCP (Model Context Protocol) server that allows Claude to execute terminal commands on your computer, manage processes, and perform file operations. It provides a bridge between the Claude AI assistant and your local machine, enabling Claude to help with tasks that require system access.
+Claude Desktop Commander is an MCP (Model Context Protocol) server that allows Claude to execute terminal commands on your computer, manage processes, perform file operations, and analyze codebases. It provides a bridge between the Claude AI assistant and your local machine, enabling Claude to help with tasks that require system access and deep code understanding.
 
 Recent enhancements include:
+- Enhanced code analyzer with semantic understanding and vector database storage
 - Robust error handling and logging system with SQLite integration
 - Improved setup script with better directory creation logic
 - Enhanced command execution and tracking
@@ -36,6 +39,7 @@ The system is built using a modular architecture with these key components:
 - **Process**: Process management tools (`tools/process.ts`)
 - **Filesystem**: File operation tools (`tools/filesystem.ts`)
 - **Edit**: File editing tools (`tools/edit.ts`)
+- **Code Analyzer**: Advanced codebase analysis (`tools/code-analyzer/`)
 
 ### Utility Components
 - **Logging**: Comprehensive logging implementation (`utils/logging.ts`)
@@ -127,6 +131,103 @@ File operations include reading, writing, searching, and editing files. These op
 - Symlink handling prevents security bypasses
 - Content validation for all operations
 
+## Enhanced Code Analyzer
+
+The enhanced code analyzer provides deep semantic understanding of codebases, storing analysis in a vector database and enabling natural language queries.
+
+### Code Analyzer Architecture
+
+The code analyzer is structured into several modular components:
+
+1. **Scanner**: Analyzes directory structure and code files
+2. **Analysis**: Uses LLM to understand code semantics
+3. **Storage**: Persists analysis in a vector database
+4. **Claude Interface**: Handles natural language queries
+
+### Key Components
+
+- **FileScanner**: Enhanced directory traversal with depth control
+- **CodeChunker**: Intelligent code chunking for analysis
+- **LLMAnalyzer**: Integration with local Tensor LLM
+- **VectorStorage**: Qdrant vector database integration
+- **QueryHandler**: Natural language query processing
+
+### Prerequisites
+
+The enhanced code analyzer requires:
+- **Qdrant Vector Database**: Running at http://127.0.0.1:6333
+- **Tensor LLM Service**: Running at http://localhost:8020
+
+### Code Analyzer Configuration
+
+The code analyzer can be configured in `src/tools/code-analyzer/config.ts`:
+
+```javascript
+export default {
+  scanner: {
+    maxDepth: 10,
+    defaultIncludePatterns: ['**/*.js', '**/*.ts', '**/*.py', '**/*.java', '**/*.jsx', '**/*.tsx', '**/*.go', '**/*.rs'],
+    defaultExcludePatterns: ['**/node_modules/**', '**/dist/**', '**/.git/**', '**/build/**', '**/__pycache__/**'],
+    maxFileSize: 1000 * 1024, // 1MB
+    chunkSize: 1000, // lines per chunk
+    overlapSize: 50 // lines of overlap between chunks
+  },
+  llm: {
+    url: 'http://localhost:8020',
+    embeddingsUrl: 'http://localhost:8020/embeddings',
+    temperature: 0.1,
+    maxTokens: 2000,
+    retryAttempts: 3,
+    retryDelay: 1000
+  },
+  vectorDb: {
+    url: 'http://127.0.0.1:6333',
+    collection: 'code_analysis',
+    dimensions: 1536,
+    distance: 'Cosine'
+  }
+};
+```
+
+### Analysis Process
+
+The code analyzer follows this process:
+1. Scan a directory for code files
+2. Chunk files into manageable segments
+3. Analyze each chunk with the LLM
+4. Generate vector embeddings for semantic understanding
+5. Store analysis and embeddings in Qdrant
+6. Enable natural language queries against the stored analysis
+
+### Available Tools
+
+- **code_analyzer**: Analyzes a codebase to extract key information
+  ```
+  Parameters:
+  - directory: Path to analyze
+  - maxDepth: Maximum directory depth to scan (default: 3)
+  - filePatterns: File patterns to include (e.g. ["*.ts", "*.js"])
+  - includeChunks: Whether to include chunked content in results
+  - includeSummary: Whether to include a natural language summary
+  - maxFileSize: Maximum file size in KB to analyze (default: 500)
+  ```
+
+- **query_codebase**: Queries the analyzed codebase using natural language
+  ```
+  Parameters:
+  - query: Natural language query about the codebase
+  - limit: Maximum number of results to return (default: 5)
+  ```
+
+### Integrating with External Tools
+
+The code analyzer can be integrated with other development tools:
+- **IDE extensions**: Direct integration with code editors
+- **CI/CD pipelines**: Automated analysis during builds
+- **Documentation generators**: Augmenting documentation with semantic insights
+
+For detailed setup and usage instructions, see [CODE_ANALYZER_SETUP.md](./CODE_ANALYZER_SETUP.md).
+
 ## Configuration
 
 Configuration is stored in `config.json` and includes:
@@ -204,6 +305,8 @@ If you want to publish your fork as a separate package:
 - **Config Directory Not Found**: The setup script has been improved to properly create missing directories
 - **Command Timeout**: Long-running commands will continue in the background, use `read_output` to get updates
 - **Permission Errors**: Ensure Claude has appropriate permissions to access directories
+- **Vector Database Connection Error**: Verify Qdrant is running at http://127.0.0.1:6333
+- **LLM Service Error**: Check if Tensor LLM is running at http://localhost:8020
 
 ### Logging
 When troubleshooting, check the logs in:
@@ -217,3 +320,4 @@ For more detailed logging, change the log level to "debug" in `config.json`:
   "level": "debug",
   ...
 }
+```

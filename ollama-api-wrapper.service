@@ -1,0 +1,15 @@
+[Unit]
+Description=OpenAI-compatible API wrapper for Ollama
+After=network.target
+
+[Service]
+User=USERNAME
+WorkingDirectory=/path/to/ollama-api-wrapper
+ExecStart=/path/to/ollama-api-wrapper/venv/bin/python /path/to/ollama-api-wrapper/server.py
+Restart=on-failure
+Environment="OLLAMA_API=http://localhost:11434"
+Environment="DEFAULT_MODEL=llama3.2"
+Environment="EMBEDDING_MODEL=llama3.2"
+
+[Install]
+WantedBy=multi-user.target

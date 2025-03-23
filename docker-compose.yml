@@ -1,0 +1,41 @@
+version: '3.8'
+
+services:
+  ollama:
+    image: ollama/ollama
+    container_name: custom-ollama
+    restart: unless-stopped
+    ports:
+      - "11434:11434"
+    volumes:
+      - ./models/ollama:/root/.ollama
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    networks:
+      - llm-network
+
+  api-wrapper:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ollama-api-wrapper
+    restart: unless-stopped
+    ports:
+      - "8020:8020"
+    environment:
+      - OLLAMA_API=http://custom-ollama:11434
+      - DEFAULT_MODEL=llama2
+      - EMBEDDING_MODEL=nomic-embed-text
+    depends_on:
+      - ollama
+    networks:
+      - llm-network
+
+networks:
+  llm-network:
+    driver: bridge

@@ -6,7 +6,7 @@ This document provides a comprehensive inventory of all tools available through 
 
 Currently, we have 16 MCP servers successfully integrated, providing a wide range of capabilities:
 
-1. **desktop-commander**: File operations and command execution
+1. **desktop-commander**: File operations, command execution, and code analysis
 2. **LLM API Servers**: claude, openai, grok, groq, mistral, perplexity, togetherai, huggingface
 3. **Data Storage Servers**: pinecone, supabase, redis
 4. **External API Servers**: github, google-maps, braveapi
@@ -14,7 +14,7 @@ Currently, we have 16 MCP servers successfully integrated, providing a wide rang
 
 ## Desktop Commander Tools
 
-The Desktop Commander server provides powerful tools for terminal command execution, file operations, and process management.
+The Desktop Commander server provides powerful tools for terminal command execution, file operations, process management, and code analysis.
 
 ### Terminal Tools
 
@@ -155,6 +155,27 @@ The Desktop Commander server provides powerful tools for terminal command execut
 - **Example**:
   ```
   Use the edit_block tool to change the API endpoint in config.js
+  ```
+
+### Code Analysis Tools
+
+#### code_analyzer
+- **Description**: Analyzes a codebase to extract key information about structure, dependencies, API usage, and architectural patterns
+- **Server**: desktop-commander
+- **Prerequisites**: Local Qdrant vector database (http://127.0.0.1:6333) and Tensor LLM service (http://localhost:8020)
+- **Configuration**: Customizable depth, file patterns, and analysis options
+- **Example**:
+  ```
+  Use the code_analyzer tool to analyze the project at C:\my-project with maxDepth 5
+  ```
+
+#### query_codebase
+- **Description**: Queries the analyzed codebase using natural language to find relevant code patterns and structures
+- **Server**: desktop-commander
+- **Prerequisites**: Previously analyzed codebase with code_analyzer
+- **Example**:
+  ```
+  Use the query_codebase tool to find authentication middleware implementations
   ```
 
 ## LLM API Tools
@@ -356,6 +377,7 @@ The Desktop Commander server provides powerful tools for terminal command execut
    - For text generation: Use claude, openai, or other LLM servers
    - For data storage: Use pinecone, supabase, or redis
    - For external API access: Use github, google-maps, or braveapi
+   - For code analysis: Use code_analyzer and query_codebase
 
 3. **Error Handling**: Check tool responses for errors and handle them appropriately. Most tools will return clear error messages if prerequisites are not met or operations fail.
 
@@ -371,3 +393,36 @@ To add new tools, you need to:
 4. Restart your Claude client
 
 When creating custom MCP servers, follow the Model Context Protocol specification and use the MCP SDK for easy integration.
+
+## Code Analyzer Configuration
+
+The enhanced code analyzer can be configured in `src/tools/code-analyzer/config.ts` with the following options:
+
+```javascript
+{
+  scanner: {
+    maxDepth: 10,
+    defaultIncludePatterns: ['**/*.js', '**/*.ts', '**/*.py', '**/*.java', '**/*.jsx', '**/*.tsx', '**/*.go', '**/*.rs'],
+    defaultExcludePatterns: ['**/node_modules/**', '**/dist/**', '**/.git/**', '**/build/**', '**/__pycache__/**'],
+    maxFileSize: 1000 * 1024, // 1MB
+    chunkSize: 1000, // lines per chunk
+    overlapSize: 50 // lines of overlap between chunks
+  },
+  llm: {
+    url: 'http://localhost:8020',
+    embeddingsUrl: 'http://localhost:8020/embeddings',
+    temperature: 0.1,
+    maxTokens: 2000,
+    retryAttempts: 3,
+    retryDelay: 1000
+  },
+  vectorDb: {
+    url: 'http://127.0.0.1:6333',
+    collection: 'code_analysis',
+    dimensions: 1536,
+    distance: 'Cosine'
+  }
+}
+```
+
+For more details, see `CODE_ANALYZER_SETUP.md`.

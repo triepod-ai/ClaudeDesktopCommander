@@ -1,0 +1,19 @@
+{
+  "name": "@wonderwhy-er/ollama-wrapper",
+  "version": "0.1.0",
+  "description": "Ollama integration for MCP server",
+  "license": "MIT",
+  "author": "Eduards Ruzga",
+  "type": "module",
+  "scripts": {
+    "start": "node src/index.js",
+    "test": "node test/test.js"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "1.0.1",
+    "axios": "^1.6.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0"
+  }
+}

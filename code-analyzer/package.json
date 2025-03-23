@@ -1,0 +1,26 @@
+{
+  "name": "@wonderwhy-er/code-analyzer",
+  "version": "0.1.0",
+  "description": "Code analysis component for MCP server",
+  "license": "MIT",
+  "author": "Eduards Ruzga",
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc --watch",
+    "start": "node dist/index.js",
+    "test": "node test/test.js"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "1.0.1",
+    "glob": "^11.0.1",
+    "lru-cache": "^11.0.2",
+    "sqlite": "^5.1.1",
+    "sqlite3": "^5.1.7",
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "typescript": "^5.3.3"
+  }
+}
