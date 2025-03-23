@@ -5,7 +5,7 @@ This guide will help you test the integration between Claude clients (Claude Des
 ## Prerequisites
 
 1. Claude Desktop app or Windsurf extension installed
-2. MCP servers configured (see [MCP_SETUP_GUIDE.md](./MCP_SETUP_GUIDE.md))
+2. MCP servers configured (see [MCP_SETUP_GUIDE.md](../mcp-core/MCP_SETUP_GUIDE.md))
 3. API keys configured for any services you'll be testing
 
 ## General Testing Process
@@ -167,7 +167,7 @@ If you encounter issues:
 1. Verify the MCP server configuration is correct
 2. Check if required dependencies are installed
 3. Look for error messages in the logs:
-   - Desktop Commander: `L:\ClaudeDesktopCommander\logs`
+   - Desktop Commander: `L:\ClaudeDesktopCommander\mcp-core\logs`
    - Other servers: Check the terminal output or system logs
 4. Try running the MCP server directly from the command line
 

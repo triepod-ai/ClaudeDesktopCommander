@@ -425,4 +425,4 @@ The enhanced code analyzer can be configured in `src/tools/code-analyzer/config.
 }
 ```
 
-For more details, see `CODE_ANALYZER_SETUP.md`.
+For more details, see `../code-analyzer/CODE_ANALYZER_SETUP.md`.

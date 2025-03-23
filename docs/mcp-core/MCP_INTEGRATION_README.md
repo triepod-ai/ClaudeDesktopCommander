@@ -16,7 +16,7 @@ Currently, we have successfully integrated with:
 
 Windsurf uses a dedicated MCP configuration file located at:
 ```
-c:/Users/bthom/.codeium/windsurf/mcp_config.json
+c:/Users/[username]/.codeium/windsurf/mcp_config.json
 ```
 
 This configuration follows this format:
@@ -50,7 +50,7 @@ We have successfully integrated 16 MCP servers with Windsurf:
    ```json
    "desktop-commander": {
      "command": "node",
-     "args": ["l:\\ClaudeDesktopCommander\\dist\\index.js"]
+     "args": ["L:\\ClaudeDesktopCommander\\mcp-core\\dist\\index.js"]
    }
    ```
 
@@ -140,7 +140,7 @@ The batch script (`run-desktop-commander.bat`) ensures:
 "desktopCommander": {
   "command": "C:\\Program Files\\nodejs\\node.exe",
   "args": [
-    "L:\\ClaudeDesktopCommander\\dist\\index.js"
+    "L:\\ClaudeDesktopCommander\\mcp-core\\dist\\index.js"
   ]
 }
 ```
@@ -165,7 +165,7 @@ For Python-based MCP servers using `uv`:
 
 | Feature | Windsurf | Claude Desktop |
 |---------|----------|---------------|
-| Configuration Location | `c:/Users/bthom/.codeium/windsurf/mcp_config.json` | `%APPDATA%\Claude\claude_desktop_config.json` |
+| Configuration Location | `c:/Users/[username]/.codeium/windsurf/mcp_config.json` | `%APPDATA%\Claude\claude_desktop_config.json` |
 | Environment Variables | Supports global and per-server env variables | Limited env variable support |
 | Paths | Relative paths may work | Must use absolute paths |
 | Server Naming | More standardized naming conventions | Flexible naming |
@@ -201,8 +201,8 @@ The following tools are available through our configured MCP servers:
 Use the provided test scripts to verify integration:
 
 1. `run-tests.bat`: Checks configuration and creates test data
-2. `TESTING_GUIDE.md`: Provides detailed testing steps
-3. `TEST_REPORT_TEMPLATE.md`: For documenting test results
+2. For detailed testing, refer to the Testing Guide in the documentation.
+3. See Test Report Template for documenting test results
 
 ## Troubleshooting
 

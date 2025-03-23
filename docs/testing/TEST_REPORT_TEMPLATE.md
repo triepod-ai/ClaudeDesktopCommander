@@ -1,17 +1,17 @@
 # Claude Desktop Commander MCP Integration Test Report
 
 ## Test Environment
-- **OS**: Windows 11
-- **Claude Desktop Version**: 0.8.1
-- **Desktop Commander Version**: 0.2.0
+- **OS**: [Windows 11/macOS/Linux]
+- **Claude Desktop Version**: [VERSION]
+- **Desktop Commander Version**: [VERSION]
 - **Test Date**: [INSERT DATE]
 
 ## Test Results
 
 ### Configuration Setup
-- [✓] Claude Desktop config file created successfully
-- [✓] API key configured correctly
-- [✓] MCP server registered in config
+- [ ] Claude Desktop config file created successfully
+- [ ] API key configured correctly
+- [ ] MCP server registered in config
 
 ### Terminal Command Tests
 - [ ] Basic command execution (`dir` / `ls`)
@@ -73,6 +73,28 @@
   - **Result**: [SUCCESS/FAILURE]
   - **Notes**: [OBSERVATIONS]
 
+### Code Analyzer Tests (if applicable)
+- [ ] Directory scanning
+  - **Result**: [SUCCESS/FAILURE]
+  - **Notes**: [OBSERVATIONS]
+
+- [ ] Code analysis storage
+  - **Result**: [SUCCESS/FAILURE]
+  - **Notes**: [OBSERVATIONS]
+
+- [ ] Natural language queries
+  - **Result**: [SUCCESS/FAILURE]
+  - **Notes**: [OBSERVATIONS]
+
+### Ollama Wrapper Tests (if applicable)
+- [ ] Model listing
+  - **Result**: [SUCCESS/FAILURE]
+  - **Notes**: [OBSERVATIONS]
+
+- [ ] Inference requests
+  - **Result**: [SUCCESS/FAILURE]
+  - **Notes**: [OBSERVATIONS]
+
 ## Issues Encountered
 1. [ISSUE DESCRIPTION]
    - **Severity**: [HIGH/MEDIUM/LOW]
@@ -88,6 +110,7 @@
 - Response time for commands: [FAST/MODERATE/SLOW]
 - File operation performance: [FAST/MODERATE/SLOW]
 - Process management performance: [FAST/MODERATE/SLOW]
+- Code analyzer performance (if applicable): [FAST/MODERATE/SLOW]
 
 ## Recommendations
 - [RECOMMENDATION 1]

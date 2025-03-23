@@ -14,9 +14,11 @@ The enhanced code analyzer requires the following services to be running:
 ### 1. Install Required Dependencies
 
 ```bash
-# Add required dependencies
-npm install --save @qdrant/js-client-rest node-fetch fs-extra crypto
-npm install --save-dev @types/fs-extra @types/glob
+# Navigate to the code-analyzer directory
+cd code-analyzer
+
+# Install dependencies
+npm install
 
 # Rebuild the application
 npm run build
@@ -58,11 +60,40 @@ Search the code for implementation of authentication middleware.
 
 ## Configuration Options
 
-You can modify the code analyzer configuration in `src/tools/code-analyzer/config.ts`:
+You can modify the code analyzer configuration in `src/config.ts`:
 
 - **Scanner Configuration**: Adjust scanning depth, file patterns, max file size, etc.
 - **LLM Configuration**: Change the LLM server URL, temperature, max tokens, etc.
 - **Vector DB Configuration**: Set Qdrant URL, collection name, vector dimensions, etc.
+
+Example configuration:
+
+```javascript
+export default {
+  scanner: {
+    maxDepth: 10,
+    defaultIncludePatterns: ['**/*.js', '**/*.ts', '**/*.py', '**/*.java', '**/*.jsx', '**/*.tsx', '**/*.go', '**/*.rs'],
+    defaultExcludePatterns: ['**/node_modules/**', '**/dist/**', '**/.git/**', '**/build/**', '**/__pycache__/**'],
+    maxFileSize: 1000 * 1024, // 1MB
+    chunkSize: 1000, // lines per chunk
+    overlapSize: 50 // lines of overlap between chunks
+  },
+  llm: {
+    url: 'http://localhost:8020',
+    embeddingsUrl: 'http://localhost:8020/embeddings',
+    temperature: 0.1,
+    maxTokens: 2000,
+    retryAttempts: 3,
+    retryDelay: 1000
+  },
+  vectorDb: {
+    url: 'http://127.0.0.1:6333',
+    collection: 'code_analysis',
+    dimensions: 1536,
+    distance: 'Cosine'
+  }
+};
+```
 
 ## Troubleshooting
 

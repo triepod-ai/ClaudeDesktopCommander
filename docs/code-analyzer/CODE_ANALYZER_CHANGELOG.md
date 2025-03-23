@@ -39,7 +39,7 @@
 - Added `CODE_ANALYZER_SETUP.md` with detailed setup instructions
 - Updated `MCP_TOOLS_INVENTORY.md` to include new code analysis tools
 - Updated `README.md` to highlight code analysis capabilities
-- Updated `DOCUMENTATION.md` with technical details about the code analyzer
+- Added documentation about the code analyzer architecture and workflow
 
 ### Helper Scripts
 - `setup-code-analyzer.bat`: Windows installation script

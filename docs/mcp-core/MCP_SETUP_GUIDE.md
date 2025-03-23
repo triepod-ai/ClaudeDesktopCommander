@@ -60,23 +60,20 @@ The Claude Desktop Commander is a powerful MCP server that provides terminal com
 
 2. **Set up the server**:
    ```bash
-   npm install
-   npm run build
+   npm run install:all
+   npm run build:mcp
    ```
 
-3. **Create a batch script** (Windows) or shell script (macOS/Linux):
+3. **Use the included launcher script** (Windows) or create a shell script (macOS/Linux):
    
    **Windows (`run-desktop-commander.bat`)**:
-   ```batch
-   @echo off
-   cd /d %~dp0
-   node dist/index.js
-   ```
+   Already included in the repository root directory.
    
    **macOS/Linux (`run-desktop-commander.sh`)**:
    ```bash
    #!/bin/bash
    cd "$(dirname "$0")"
+   cd mcp-core
    node dist/index.js
    ```
    
@@ -104,7 +101,7 @@ The Claude Desktop Commander is a powerful MCP server that provides terminal com
    "mcpServers": {
      "desktop-commander": {
        "command": "node",
-       "args": ["C:\\full\\path\\to\\ClaudeDesktopCommander\\dist\\index.js"]
+       "args": ["C:\\full\\path\\to\\ClaudeDesktopCommander\\mcp-core\\dist\\index.js"]
      }
    }
    ```
@@ -480,5 +477,5 @@ After successfully setting up your MCP servers:
 
 1. Restart your Claude client (Claude Desktop or Windsurf)
 2. Test each server with basic commands
-3. Refer to the [MCP Tools Inventory](./MCP_TOOLS_INVENTORY.md) for a complete list of available tools
-4. Follow the [Testing Guide](./TESTING_GUIDE.md) for thorough validation
+3. Refer to the [MCP Tools Inventory](MCP_TOOLS_INVENTORY.md) for a complete list of available tools
+4. Follow the [Testing Guide](../testing/TESTING_GUIDE.md) for thorough validation

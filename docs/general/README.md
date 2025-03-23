@@ -34,15 +34,6 @@ ClaudeDesktopCommander/
 │   ├── code-analyzer/     # Code Analyzer documentation
 │   └── testing/           # Testing documentation
 │
-├── scripts/               # Shared scripts
-│   ├── setup/             # Setup scripts
-│   ├── utilities/         # Utility scripts
-│   └── ci/                # CI/CD scripts
-│
-├── docker/                # Docker configuration
-│   ├── docker-compose.yml # Docker Compose configuration
-│   └── Dockerfile         # Docker image definition
-│
 ├── _archive/              # Archived temporary files and obsolete components
 │
 ├── assets/                # Shared assets and resources
@@ -134,11 +125,10 @@ Update your Claude Desktop configuration to point to the main `run-desktop-comma
 
 ## Documentation
 
-Detailed documentation is available in the `docs/` directory:
-- [MCP Tools Inventory](docs/mcp-core/MCP_TOOLS_INVENTORY.md): Complete list of available tools
-- [MCP Setup Guide](docs/mcp-core/MCP_SETUP_GUIDE.md): Setup instructions for MCP servers
-- [Code Analyzer Setup](docs/code-analyzer/CODE_ANALYZER_SETUP.md): Setup guide for the code analyzer
-- [Documentation Hub](docs/general/DOCUMENTATION_HUB.md): Central hub for all documentation
+Detailed documentation is available in the following files:
+- [MCP Tools Inventory](../mcp-core/MCP_TOOLS_INVENTORY.md): Complete list of available tools
+- [MCP Setup Guide](../mcp-core/MCP_SETUP_GUIDE.md): Setup instructions for MCP servers
+- [Code Analyzer Setup](../code-analyzer/CODE_ANALYZER_SETUP.md): Setup guide for the code analyzer
 
 ## Future Development
 
