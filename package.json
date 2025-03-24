@@ -6,21 +6,25 @@
   "workspaces": [
     "mcp-core",
     "code-analyzer",
-    "ollama-wrapper"
+    "ollama-wrapper",
+    "mcp-ollama"
   ],
   "scripts": {
     "build:mcp": "cd mcp-core && npm run build",
     "build:analyzer": "cd code-analyzer && npm run build",
+    "build:mcpollama": "cd mcp-ollama && npm run build",
     "start:mcp": "cd mcp-core && npm start",
     "start:analyzer": "cd code-analyzer && npm start",
     "start:ollama": "cd ollama-wrapper && npm start",
+    "start:mcpollama": "cd mcp-ollama && npm start",
     "test:mcp": "cd mcp-core && npm test",
     "test:analyzer": "cd code-analyzer && npm test",
     "install:all": "npm install && npm run install:workspaces",
-    "install:workspaces": "npm run install:mcp && npm run install:analyzer && npm run install:ollama",
+    "install:workspaces": "npm run install:mcp && npm run install:analyzer && npm run install:ollama && npm run install:mcpollama",
     "install:mcp": "cd mcp-core && npm install",
     "install:analyzer": "cd code-analyzer && npm install",
-    "install:ollama": "cd ollama-wrapper && npm install"
+    "install:ollama": "cd ollama-wrapper && npm install",
+    "install:mcpollama": "cd mcp-ollama && npm install"
   },
   "author": "Eduards Ruzga",
   "license": "MIT",

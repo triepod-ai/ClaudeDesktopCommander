@@ -1,0 +1,29 @@
+{
+  "id": "memory-command",
+  "name": "Memory Command System",
+  "version": "0.1.0",
+  "description": "Knowledge management system for storing and retrieving information",
+  "author": "TriepodAI",
+  "main": "src/index.js",
+  "capabilities": [
+    "memory.remember",
+    "memory.recall",
+    "memory.analyze",
+    "memory.plan",
+    "memory.list"
+  ],
+  "configSchema": {
+    "properties": {
+      "chromaHost": {
+        "type": "string",
+        "description": "Chroma DB host",
+        "default": "localhost"
+      },
+      "chromaPort": {
+        "type": "number",
+        "description": "Chroma DB port",
+        "default": 8000
+      }
+    }
+  }
+}

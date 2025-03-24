@@ -1,0 +1,30 @@
+FROM node:22-slim
+
+WORKDIR /app
+
+# Copy package files
+COPY mcp-core/memory-command-system/package*.json ./
+
+# Install dependencies
+RUN npm ci --production
+
+# Copy source code
+COPY mcp-core/memory-command-system/src ./src
+
+# Copy error handling and compatibility files - these contain our fixes
+COPY mcp-core/memory-command-system/src/foundation/errorHandler.js ./src/foundation/errorHandler.js
+COPY mcp-core/memory-command-system/src/foundation/moduleCompatibility.js ./src/foundation/moduleCompatibility.js
+COPY mcp-core/memory-command-system/src/storage/memoryAdapter.js ./src/storage/memoryAdapter.js
+COPY mcp-core/memory-command-system/src/index.js ./src/index.js
+
+# Create the dist directory that will be mounted
+RUN mkdir -p dist
+
+# Set environment variables
+ENV NODE_ENV=production
+ENV MCP_SAFE_MODE=true
+ENV NODE_OPTIONS="--no-warnings --max-http-header-size=16384 --max-old-space-size=512"
+ENV DEBUG_LEVEL=info
+
+# Set the entry point to the memory command system
+ENTRYPOINT ["node", "src/index.js"]
